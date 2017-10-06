@@ -35,7 +35,7 @@ Codefresh Build Step to execute Twistlock/Nexus scan
 All `${{var}}` variables must be put into Codefresh Build Parameters
 codefresh.yml
 ```console
-    buildimage:
+  buildimage:
     type: build
     title: Build Runtime Image
     dockerfile: Dockerfile
