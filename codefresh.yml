@@ -6,7 +6,7 @@ steps:
       type: build
       description: image build step
       dockerfile: Dockerfile
-      image_name: #Insert Repository
+      image_name: sctechdev/docker-security-scanner
       tag: latest-cf-build-candidate
 
    push_image:
