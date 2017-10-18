@@ -1,13 +1,14 @@
+# Security Scanning Tools
 
-# Example
+Builds Docker image which invokes security script using Twistlock CLI in combination with Nexus IQ CLI or Twistlock on its own.
 
-Builds Docker image which invokes security scripts.
+For Nexus IQ integration a Nexus IQ Application must be setup.
 
-Requires Nexus CLI JAR file and Twistlock Scanner executable.  You can get these from those vendors.
+Documentation:
 
-Copy the files into packages.
+Twistlock CLI: https://twistlock.desk.com/customer/en/portal/articles/2879128-scan-images-with-twistcli?b_id=16619
 
-Update twistlock.py with the correct Nexus CLI Jar filename if using Nexus
+Nexus IQ CLI: https://help.sonatype.com/display/NXI/Nexus+IQ+CLI
 
 ## Script Library
 

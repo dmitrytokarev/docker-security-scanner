@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     $(lsb_release -cs) \
     stable" && \
     apt-get update && apt-get install -y --no-install-recommends \
-	  docker-ce=17.03.0~ce-0~ubuntu-xenial && \
+	  docker-ce=17.09.0~ce-0~ubuntu && \
     apt-get install -y \
       openjdk-8-jre \
     ; \
@@ -34,9 +34,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     [ "$JAVA_HOME" = "$(docker-java-home)" ]; \
     \
     update-alternatives --get-selections | awk -v home="$JAVA_HOME" 'index($3, home) == 1 { $2 = "manual"; print | "update-alternatives --set-selections" }'; \
-    update-alternatives --query java | grep -q 'Status: manual'
+    update-alternatives --query java | grep -q 'Status: manual' && \
+    mkdir /packages && \
+    curl -o /packages/twistlock-scanner https://cdn.twistlock.com/support/twistcli && \
+    curl -o /packages/nexus-iq-cli-1.26.0-01.jar https://download.sonatype.com/clm/scanner/nexus-iq-cli-1.38.0-02.jar
 
-COPY packages /packages
 COPY scripts /scripts
 
 RUN	chmod +x /packages
