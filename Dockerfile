@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     $(lsb_release -cs) \
     stable" && \
     apt-get update && apt-get install -y --no-install-recommends \
-	  docker-ce=17.06.0~ce-0~ubuntu-xenial && \
+	  docker-ce=17.06.3~ce-0~ubuntu-xenial && \
     apt-get install -y \
       openjdk-8-jre \
     ; \
