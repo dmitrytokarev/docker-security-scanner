@@ -34,8 +34,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     [ "$JAVA_HOME" = "$(docker-java-home)" ]; \
     \
     update-alternatives --get-selections | awk -v home="$JAVA_HOME" 'index($3, home) == 1 { $2 = "manual"; print | "update-alternatives --set-selections" }'; \
-    update-alternatives --query java | grep -q 'Status: manual' \
-    curl -o /packages/twistlock-scanner https://cdn.twistlock.com/support/twistcli \
+    update-alternatives --query java | grep -q 'Status: manual' && \
+    curl -o /packages/twistlock-scanner https://cdn.twistlock.com/support/twistcli && \
     curl -o /packages/nexus-iq-cli-1.26.0-01.jar https://download.sonatype.com/clm/scanner/nexus-iq-cli-1.38.0-02.jar
 
 COPY scripts /scripts
