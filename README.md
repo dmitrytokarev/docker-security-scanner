@@ -1,4 +1,4 @@
-# Security Scanning Tools
+# Security Scanning Tools [![Codefresh build status]( https://g.codefresh.io/api/badges/build?repoOwner=SC-TechDev&repoName=docker-security-scanner&branch=master&pipelineName=docker-security-scanner&accountName=sctechdevservice&type=cf-1)]( https://g.codefresh.io/repositories/SC-TechDev/docker-security-scanner/builds?filter=trigger:build;branch:master;service:59e62c5410e3d100019e7f3d~docker-security-scanner)
 
 Builds Docker image which invokes security script using Twistlock CLI in combination with Nexus IQ CLI or Twistlock on its own.
 
