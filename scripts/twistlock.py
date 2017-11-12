@@ -75,21 +75,20 @@ def main(argv):
       java_home = arg
     elif opt in ('-K', "--java_keystore_password"):
       java_keystore_password = arg
-  
-  # Download and store Twistlock Console site cert
-  cert = ssl.get_server_certificate((tl_console_hostname, tl_console_port))
-  print(cert,file=open("twistlock.cer", "w"))
 
   if tl_only == "TRUE": 
     # Run stand-alone Twistlock Scan
     command = ['/packages/twistcli images scan help']
     proc = subprocess.Popen(command, shell=True)
     stdout, stderr = proc.communicate()
-    command = ['/packages/twistcli images scan --address "https://' + tl_console_hostname + ':' + tl_console_port + '" --user "' + tl_console_username + '" --password "' + tl_console_password + '" --include-package-files --hash "sha1" ----tlscacert "./twistlock.cer" ' + docker_image_id]
+    command = ['/packages/twistcli images scan --address "https://' + tl_console_hostname + ':' + tl_console_port + '" --user "' + tl_console_username + '" --password "' + tl_console_password + '" --include-package-files --hash "sha1" ' + docker_image_id]
     proc = subprocess.Popen(command, shell=True)
     stdout, stderr = proc.communicate()
 
   else:
+    # Download and store Twistlock Console site cert
+    cert = ssl.get_server_certificate((tl_console_hostname, tl_console_port))
+    print(cert,file=open("twistlock.cer", "w"))
 
     # Import site cert into java keystore
     command = ['keytool -importcert -noprompt -file twistlock.cer -alias twistlock -storepass ' + java_keystore_password + ' -keystore ' + java_home + '/jre/lib/security/cacerts']
