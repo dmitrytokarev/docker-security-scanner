@@ -41,8 +41,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY scripts /scripts
 
-RUN	chmod +x /packages
-RUN	chmod +x /scripts
+RUN	chmod +x -R /packages
+RUN	chmod +x -R /scripts
 
 WORKDIR /scripts
 
