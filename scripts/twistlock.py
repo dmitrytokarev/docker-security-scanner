@@ -7,9 +7,8 @@ import ssl
 
 def main(argv):
   try:
-    # Update to correct JAR filename
-    st_scanner_jar = '/packages/nexus-iq-cli-1.26.0-01.jar'
-    tl_scanner_exec = '/packages/twistlock-scanner'
+    st_scanner_jar = '/packages/nexus-iq-cli-1.38.0-02.jar'
+    tl_scanner_exec = '/packages/twistcli'
     docker_image_id = os.environ.get('DOCKER_IMAGE_ID')
     st_application_id = os.environ.get('NEXUS_IQ_APPLICATION_ID')
     st_url = os.environ.get('NEXUS_IQ_URL')
@@ -79,7 +78,7 @@ def main(argv):
 
   if tl_only == "TRUE": 
     # Run stand-alone Twistlock Scan
-    command = ['/packages/twistlock-scanner -c https://' + tl_console_hostname + ':' + tl_console_port + ' -u ' + tl_console_username + ' -p ' + tl_console_password + ' -i ' + docker_image_id + ' --include-files --include-package-files --hash-method sha1']
+    command = ['/packages/twistcli -c https://' + tl_console_hostname + ':' + tl_console_port + ' -u ' + tl_console_username + ' -p ' + tl_console_password + ' -i ' + docker_image_id + ' --include-files --include-package-files --hash-method sha1']
     proc = subprocess.Popen(command, shell=True)
     stdout, stderr = proc.communicate()
 
