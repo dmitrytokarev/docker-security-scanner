@@ -81,7 +81,8 @@ def main(argv):
     check_permissions = ['ls -ltra /packages/twistcli']
     run_check_permissions = subprocess.Popen(check_permissions, shell=True)
     stdout, stderr = run_check_permissions.communicate()
-    command = ['/packages/twistcli -c https://' + tl_console_hostname + ':' + tl_console_port + ' -u ' + tl_console_username + ' -p ' + tl_console_password + ' -i ' + docker_image_id + ' --include-files --include-package-files --hash-method sha1']
+    command = ['/packages/twistcli -c "https://' + tl_console_hostname + ':' + tl_console_port + '" -u "' + tl_console_username + '" -p "' + tl_console_password + '" -i ' + docker_image_id + ' --include-files --include-package-files --hash-method sha1']
+    print(command)
     proc = subprocess.Popen(command, shell=True)
     stdout, stderr = proc.communicate()
 
