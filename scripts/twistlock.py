@@ -81,7 +81,7 @@ def main(argv):
     command = ['/packages/twistcli images scan help']
     proc = subprocess.Popen(command, shell=True)
     stdout, stderr = proc.communicate()
-    command = ['/packages/twistcli images scan --address "https://' + tl_console_hostname + ':' + tl_console_port + '" --user "' + tl_console_username + '" --password "' + tl_console_password + '" --include-package-files --hash "sha1" ' + docker_image_id]
+    command = ['/packages/twistcli images scan --address "http://' + tl_console_hostname + ':' + tl_console_port + '" --user "' + tl_console_username + '" --password "' + tl_console_password + '" --include-package-files --hash "sha1" ' + docker_image_id]
     proc = subprocess.Popen(command, shell=True)
     stdout, stderr = proc.communicate()
 
