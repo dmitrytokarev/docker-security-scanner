@@ -78,6 +78,9 @@ def main(argv):
 
   if tl_only == "TRUE": 
     # Run stand-alone Twistlock Scan
+    check_permissions = ['ls -ltra /packages/twistcli']
+    run_check_permissions = subprocess.Popen(command, shell=True)
+    stdout, stderr = run_check_permissions.communicate()
     command = ['/packages/twistcli -c https://' + tl_console_hostname + ':' + tl_console_port + ' -u ' + tl_console_username + ' -p ' + tl_console_password + ' -i ' + docker_image_id + ' --include-files --include-package-files --hash-method sha1']
     proc = subprocess.Popen(command, shell=True)
     stdout, stderr = proc.communicate()
