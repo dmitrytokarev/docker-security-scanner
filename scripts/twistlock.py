@@ -134,19 +134,17 @@ def main(argv):
       .format(tl_console_protocol, tl_console_hostname, tl_console_port, tl_console_username, tl_console_password, tl_hash))
     
     # Optional twistcli options
-    options = []
-    if tl_include_package_files is not None: 
-      options.append("--include-package-files")
-    if tl_upload is not None: 
-      options.append("--upload")
-    if tl_details is not None: 
-      options.append("--details")
-    if tl_compliance_threshold is not None: 
-      options.append("--compliance-threshold '{}'".format(tl_compliance_threshold))
-    if tl_vulnerability_threshold is not None: 
-      options.append("--vulnerability-threshold '{}'".format(tl_vulnerability_threshold))
-    print(options)
-    twistcli_optional_options = ' '.join(options)
+    twistcli_optional_options = " --include_package_files" if tl_include_package_files else ''
+    if tl_upload:
+      twistcli_optional_options += " --upload"
+    if tl_details:
+      twistcli_optional_options += " --details"
+    if tl_only_fixed:
+      twistcli_optional_options += " --only-fixed"
+    if tl_compliance_threshold:
+      twistcli_optional_options += " --compliance_threshold '{}'".format(tl_compliance_threshold)
+    if tl_vulnerability_threshold:
+      twistcli_optional_options += " --vulnerability_threshold '{}'".format(tl_vulnerability_threshold)
     print(twistcli_optional_options)
     # Concatenate twistcli executable with command
     twistcli_exec = ' '.join([twistcli_base_command, twistcli_required_options, twistcli_optional_options, docker_image_id])
