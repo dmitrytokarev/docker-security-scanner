@@ -135,11 +135,11 @@ def main(argv):
     
     # Optional twistcli options
     options = []
-    options.append("--include-package-files") if tl_include_package_files
-    options.append("--upload") if tl_upload
-    options.append("--details") if tl_details
-    options.append("--compliance-threshold '{}'".format(tl_compliance_threshold))
-    options.append("--vulnerability-threshold '{}'".format(tl_vulnerability_threshold))    
+    if tl_include_package_files: options.append("--include-package-files")
+    if tl_upload: options.append("--upload")
+    if tl_details: options.append("--details")
+    if tl_compliance_threshold: options.append("--compliance-threshold '{}'".format(tl_compliance_threshold))
+    if tl_vulnerability_threshold: options.append("--vulnerability-threshold '{}'".format(tl_vulnerability_threshold))
     twistcli_optional_options = ' '.join(options)
 
     # Concatenate twistcli executable with command
