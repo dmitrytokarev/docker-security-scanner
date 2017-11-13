@@ -134,6 +134,8 @@ def main(argv):
       .format(tl_console_protocol, tl_console_hostname, tl_console_port, tl_console_username, tl_console_password, tl_hash))
     
     # Optional twistcli options
+    if tl_details:
+      print('if is working')
     options = []
     if tl_include_package_files: 
       options.append("--include-package-files")
