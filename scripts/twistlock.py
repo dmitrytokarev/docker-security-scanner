@@ -134,17 +134,16 @@ def main(argv):
       .format(tl_console_protocol, tl_console_hostname, tl_console_port, tl_console_username, tl_console_password, tl_hash))
     
     # Optional twistcli options
-    if tl_details:
-      print('if is working')
     options = []
-    if tl_include_package_files: 
+    if tl_include_package_files is not None: 
       options.append("--include-package-files")
-    options.append("--upload")
-    if tl_details: 
+    if tl_upload is not None: 
+      options.append("--upload")
+    if tl_details is not None: 
       options.append("--details")
-    if tl_compliance_threshold: 
+    if tl_compliance_threshold is not None: 
       options.append("--compliance-threshold '{}'".format(tl_compliance_threshold))
-    if tl_vulnerability_threshold: 
+    if tl_vulnerability_threshold is not None: 
       options.append("--vulnerability-threshold '{}'".format(tl_vulnerability_threshold))
     print(options)
     twistcli_optional_options = ' '.join(options)
