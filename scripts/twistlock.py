@@ -145,6 +145,7 @@ def main(argv):
       options.append("--compliance-threshold '{}'".format(tl_compliance_threshold))
     if tl_vulnerability_threshold: 
       options.append("--vulnerability-threshold '{}'".format(tl_vulnerability_threshold))
+    print(options)
     twistcli_optional_options = ' '.join(options)
     print(twistcli_optional_options)
     # Concatenate twistcli executable with command
