@@ -137,8 +137,7 @@ def main(argv):
     options = []
     if tl_include_package_files: 
       options.append("--include-package-files")
-    if tl_upload: 
-      options.append("--upload")
+    options.append("--upload")
     if tl_details: 
       options.append("--details")
     if tl_compliance_threshold: 
