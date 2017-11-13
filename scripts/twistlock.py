@@ -22,7 +22,7 @@ def main(argv):
     tl_only = os.environ.get('TL_ONLY')
     tl_tls_enabled = os.environ.get('TL_TLS_ENABLED')
     tl_hash = os.environ.get('TL_HASH', 'sha1')
-    tl_incude_package_files = os.environ.get('TL_INCLUDE_PACKAGE_FILES')
+    tl_include_package_files = os.environ.get('TL_INCLUDE_PACKAGE_FILES')
     tl_upload = os.environ.get('TL_UPLOAD')
     tl_details = os.environ.get('TL_DETAILS')
     tl_only_fixed = os.environ.get('TL_ONLY_FIXED')
