@@ -143,7 +143,8 @@ def main(argv):
     twistcli_optional_options = ' '.join(options)
 
     # Concatenate twistcli executable with command
-    twistcli_exec = " ".join([twistcli_base_command, twistcli_required_options, twistcli_optional_options, docker_image_id])
+    twistcli_exec = ' '.join([twistcli_base_command, twistcli_required_options, twistcli_optional_options, docker_image_id])
+    print(twistcli_exec)
     proc = subprocess.Popen(twistcli_exec, shell=True)
     stdout, stderr = proc.communicate()
 
