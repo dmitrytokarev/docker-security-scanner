@@ -51,7 +51,7 @@ def main(argv):
       print('-s --st_url [NEXUS_IQ_URL] - Sonatype URL must be HTTPS with Valid Cert')
       print('-t --st_stage [NEXUS_IQ_STAGE] - Sonatype Stage')
       print('-E --tl_scanner_exec - Location of twistlock-scanner executable')
-      print('-C --tl_console_hostname [TL_CONSOLE_HOSTNAME] - Twistlock Hostname with Valid Cert')
+      print('-C --tl_console_hostname [TL_CONSOLE_HOSTNAME] - Hostname/IP for Twistlock Console')
       print('-P --tl_console_port [TL_CONSOLE_PORT] - Twistock Console port')
       print('-U --tl_console_username [TL_CONSOLE_USERNAME] - Twistlock Console Username')
       print('-X --tl_console_password [TL_CONSOLE_PASSWORD] - Password for Twistlock Console Username')
