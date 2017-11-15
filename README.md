@@ -1,38 +1,51 @@
 # Security Scanning Tools [![Codefresh build status]( https://g.codefresh.io/api/badges/build?repoOwner=SC-TechDev&repoName=docker-security-scanner&branch=master&pipelineName=docker-security-scanner&accountName=sctechdevservice&type=cf-1)]( https://g.codefresh.io/repositories/SC-TechDev/docker-security-scanner/builds?filter=trigger:build;branch:master;service:59e62c5410e3d100019e7f3d~docker-security-scanner)
 
-Builds Docker image which invokes security script using Twistlock CLI in combination with Nexus IQ CLI or Twistlock on its own.
+Docker image which invokes security script using TwistCLI (Nexus coming soon)
 
-For Nexus IQ integration a Nexus IQ Application must be setup.
+### Prerequisites:
 
-Documentation:
+Codefresh Subscription (Dedicated Infrastructure) - https://codefresh.io/
 
-Twistlock CLI: https://twistlock.desk.com/customer/en/portal/articles/2879128-scan-images-with-twistcli?b_id=16619
+Twistlock Subscription - https://www.twistlock.com/
 
-Nexus IQ CLI: https://help.sonatype.com/display/NXI/Nexus+IQ+CLI
+### Documentation:
+
+Twistlock CLI: https://twistlock.desk.com/customer/en/portal/articles/2875595-twistcli?b_id=16619
+
+Nexus IQ CLI: TBD
 
 ## Script Library
 
 ### twistlock.py
 
-Executes Twistlock CLI to scan Docker image given.
+Executes TwistCLI to scan Docker image given.
 
-You can remove all NEXUS environment variables from the command below and add `-e "TL_ONLY=TRUE"` and it will run just a Twistlock scan.
+### options
 
-TTY into Docker VM
-Mac:
-```console
-$ screen ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/tty
-```
+To use an ENVIRONMENT VARIABLE you need to add the variables to your Codefresh Pipeline and also to your codefresh.yaml.
 
-Run script from Docker VM
-Mac:
-```console
-/ # docker run -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker:/var/lib/docker --privileged -e "NEXUS_IQ_APPLICATION_ID=<iq_app_id>" -e "NEXUS_IQ_USERNAME=<ad_username>" -e "NEXUS_IQ_PASSWORD=<ad_password>" -e "NEXUS_IQ_STAGE=<iq_stage>" -e "TL_CONSOLE_HOSTNAME=<twistlock console hostname>" -e "TL_CONSOLE_PORT=443" -e "TL_CONSOLE_USERNAME=<tl_username>" -e "TL_CONSOLE_PASSWORD=<tl_password>" -e "NEXUS_IQ_URL=<nexus_iq_url>" -e "JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" -e "JAVA_KEYSTORE_PASSWORD=changeit" <repository>:<tag> twistlock.py -i <image_id>
-```
 
-JAVA_KEYSTORE_PASSWORD can be anything you want feel free to update.
+Example `codefresh.yml` build is below with required ENVIRONMENT VARIABLES in place.
 
-Codefresh Build Step to execute Twistlock/Nexus scan
+
+| ENVIRONMENT VARIABLE | SCRIPT ARGUMENT | DEFAULT | TYPE | REQUIRED | DESCRIPTION |
+|----------------------------|--------------------------------------|----------|---------|----------|---------------------------------------------------------------------------------------------------------------------------------|
+| TL_CONSOLE_HOSTNAME | [ -C, --tl_console_hostname ] | null | string | Yes | hostname/ip |
+| TL_CONSOLE_PORT | [ -P, --tl_console_port ] | null | string | Yes | port |
+| TL_CONSOLE_USERNAME | [ -U, --tl_console_username ] | null | string | Yes | username |
+| TL_CONSOLE_PASSWORD | [ -X, --tl_console_password ] | null | string | Yes | password |
+| TL_ONLY | [ -Z, --tl_only ] | null | boolean | Yes | Twistlock Console Only (Required for now Nexus TBD) |
+| TL_TLS_ENABLED | [ -T, --tl_tls_enabled ] | null | boolean | No | enable TLS |
+| TL_HASH | [ -H, --tl_hash ] | [ sha1 ] | string | No | [ md5, sha1, sha256 ] hashing algorithm |
+| TL_UPLOAD | [ -R, --tl_upload ] | null | boolean | No | ( ignores all options below if set and only returns report url ) uploads report to Twistlock to be used later via Twistlock API |
+| TL_DETAILS | [ -D, --tl_details ] | null | boolean | No | prints an itemized list of each vulnerability found by the scanner |
+| TL_ONLY_FIXED | [ -O, --tl_only_fixed ] | null | boolean | No | reports just the vulnerabilites that have fixes available |
+| TL_COMPLIANCE_THRESHOLD | [ -M, --tl_compliance_threshold ] | null | string | No | [ low, medium, high ] sets the the minimal severity compliance issue that returns a fail exit code |
+| TL_VULNERABILITY_THRESHOLD | [ -V, --tl_vulnerability_threshold ] | null | string | No | [ low, medium, high, critical ] sets the minimal severity vulnerability that returns a fail exit code |
+
+### codefresh.yml
+
+Codefresh Build Step to execute Twistlock scan.
 All `${{var}}` variables must be put into Codefresh Build Parameters
 codefresh.yml
 ```console
@@ -55,19 +68,13 @@ codefresh.yml
             build.image.id: ${{CF_BUILD_ID}}
     composition_candidates:
       scan_service:
-        image: # Add your scanning image [repository/image:tag]
+        image: sctechdev/docker-security-scanner
         environment:
-          - NEXUS_IQ_URL=${{NEXUS_IQ_URL}}
-          - NEXUS_IQ_APPLICATION_ID=${{NEXUS_IQ_APPLICATION_ID}}
-          - NEXUS_IQ_USERNAME=${{NEXUS_IQ_USERNAME}}
-          - NEXUS_IQ_PASSWORD=${{NEXUS_IQ_PASSWORD}}
-          - NEXUS_IQ_STAGE=${{NEXUS_IQ_STAGE}}
           - TL_CONSOLE_HOSTNAME=${{TL_CONSOLE_HOSTNAME}}
           - TL_CONSOLE_PORT=${{TL_CONSOLE_PORT}}
           - TL_CONSOLE_USERNAME=${{TL_CONSOLE_USERNAME}}
           - TL_CONSOLE_PASSWORD=${{TL_CONSOLE_PASSWORD}}
-          - JAVA_HOME=${{JAVA_HOME}}
-          - JAVA_KEYSTORE_PASSWORD=${{JAVA_KEYSTORE_PASSWORD}}
+          - TL_ONLY=${{TL_ONLY}}
         command: twistlock.py -i "$$(docker inspect $$(docker inspect $$(docker ps -aqf label=build.image.id=${{CF_BUILD_ID}}) -f {{.Config.Image}}) -f {{.Id}} | sed 's/sha256://g')"
         depends_on:
           - imagebuild

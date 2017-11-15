@@ -36,13 +36,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     update-alternatives --get-selections | awk -v home="$JAVA_HOME" 'index($3, home) == 1 { $2 = "manual"; print | "update-alternatives --set-selections" }'; \
     update-alternatives --query java | grep -q 'Status: manual' && \
     mkdir /packages && \
-    curl -o /packages/twistlock-scanner https://cdn.twistlock.com/support/twistcli && \
-    curl -o /packages/nexus-iq-cli-1.26.0-01.jar https://download.sonatype.com/clm/scanner/nexus-iq-cli-1.38.0-02.jar
+    curl -o /packages/twistcli https://cdn.twistlock.com/support/twistcli && \
+    curl -o /packages/nexus-iq-cli-1.38.0-02.jar https://download.sonatype.com/clm/scanner/nexus-iq-cli-1.38.0-02.jar
 
 COPY scripts /scripts
 
-RUN	chmod +x /packages
-RUN	chmod +x /scripts
+RUN	chmod +x -R /packages
+RUN	chmod +x -R /scripts
 
 WORKDIR /scripts
 
