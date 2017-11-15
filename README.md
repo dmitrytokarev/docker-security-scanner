@@ -22,6 +22,12 @@ Executes TwistCLI to scan Docker image given.
 
 ### options
 
+To use an ENVIRONMENT VARIABLE you need to add the variables to your Codefresh Pipeline and also to your codefresh.yaml.
+
+
+Example `codefresh.yml` build is below with required ENVIRONMENT VARIABLES in place.
+
+
 | ENVIRONMENT VARIABLE | SCRIPT ARGUMENT | DEFAULT | TYPE | REQUIRED | DESCRIPTION |
 |----------------------------|--------------------------------------|----------|---------|----------|---------------------------------------------------------------------------------------------------------------------------------|
 | TL_CONSOLE_HOSTNAME | [ -C, --tl_console_hostname ] | null | string | Yes | hostname/ip |
