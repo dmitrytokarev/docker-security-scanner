@@ -162,6 +162,8 @@ def main(argv):
         print('Twistlock Report: ' + tl_report_url)
         f.write('TL_REPORT_URL=' + tl_report_url)
         f.close()
+      with open('/codefresh/volume/env_vars_to_export') as f:
+        lines = f.readlines()
     else:
       proc = subprocess.Popen(twistcli_exec, shell=True)
       stdout, stderr = proc.communicate()
