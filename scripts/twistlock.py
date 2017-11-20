@@ -154,7 +154,7 @@ def main(argv):
 
     # Concatenate twistcli executable with command
     twistcli_exec = ' '.join([twistcli_base_command, twistcli_required_options, twistcli_optional_options, docker_image_id])
-    proc = subprocess.Popen(twistcli_exec, shell=True, stdout=PIPE.subprocess)
+    proc = subprocess.Popen(twistcli_exec, shell=True, stdout=subprocess.PIPE)
     output=proc.communicate()[0].strip('\n')
     if proc.returncode != 0:
       sys.exit(1)
