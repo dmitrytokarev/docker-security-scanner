@@ -159,9 +159,10 @@ def main(argv):
     if proc.returncode != 0:
       sys.exit(1)
     if cf_metadata:
-      re.search("(?P<url>https?://[^\s]+)", stdout).group("url")
+      tl_report_url = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', stdout)
       with open('/codefresh/volume/env_vars_to_export', 'xt') as f:
-        f.write('export TL_REPORT_URL={}'.format(tl_report_url))
+        print('Setting TL_REPORT_URL to:' + tl_report_url)
+        f.write('export TL_REPORT_URL=' + tl_report_url)
         f.close()
 
   else:
