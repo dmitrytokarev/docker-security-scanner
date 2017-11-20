@@ -160,7 +160,7 @@ def main(argv):
       tl_report_url = ''.join(re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', stdout))
       with open('/codefresh/volume/env_vars_to_export', 'a') as f:
         print('Setting TL_REPORT_URL to:' + tl_report_url)
-        f.write('export TL_REPORT_URL=' + tl_report_url)
+        f.write('TL_REPORT_URL=' + tl_report_url)
         f.close()
     else:
       proc = subprocess.Popen(twistcli_exec, shell=True)
