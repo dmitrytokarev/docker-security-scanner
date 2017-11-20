@@ -4,11 +4,13 @@ import time
 import os
 import getopt
 import ssl
+import re
 
 def main(argv):
   try:
     st_scanner_jar = '/packages/nexus-iq-cli-1.38.0-02.jar'
     tl_scanner_exec = '/packages/twistcli'
+    cf_metadata = os.environ.get('CF_METADATA')
     docker_image_id = os.environ.get('DOCKER_IMAGE_ID')
     st_application_id = os.environ.get('NEXUS_IQ_APPLICATION_ID')
     st_url = os.environ.get('NEXUS_IQ_URL')
@@ -30,8 +32,8 @@ def main(argv):
     tl_vulnerability_threshold = os.environ.get('TL_VULNERABILITY_THRESHOLD')
     java_home = os.environ.get('JAVA_HOME', '/usr/lib/jvm/java-8-openjdk-amd64')
     java_keystore_password = os.environ.get('JAVA_KEYSTORE_PASSWORD', 'changeit')
-    opts, args = getopt.getopt(argv,"h:i:a:j:u:p:s:t:E:C:P:U:X:Z:J:K:T:H:F:R:D:O:M:V:",
-      ["help", "docker_image_id=", "st_application_id=", "st_scanner_jar=", "st_url=", "st_username=", "st_password=", "st_stage=",
+    opts, args = getopt.getopt(argv,"h:c:i:a:j:u:p:s:t:E:C:P:U:X:Z:J:K:T:H:F:R:D:O:M:V:",
+      ["help", "docker_image_id=", "cf_metadata", "st_application_id=", "st_scanner_jar=", "st_url=", "st_username=", "st_password=", "st_stage=",
         "tl_scanner_exec=", "tl_console_hostname", "tl_console_port", "tl_console_username=", "tl_console_password=", "tl_only",
         "tl_tls_enabled", "tl_hash", "tl_include_package_files", "tl_upload", "tl_details", "tl_only_fixed", "tl_compliance_threshold",
         "tl_vulnerability_threshold", "java_home=", "java_keystore_password"
@@ -43,6 +45,7 @@ def main(argv):
   for opt, arg in opts:
     if opt == ("h","--help"):
       print('twistlock.py --arg value or twistlock.py -a value')
+      print('-c --cf_metadata - Adds scanner info to Docker image metadata for Codefresh builds')
       print('-i --docker_image_id [DOCKER_IMAGE_ID] - Docker Image ID short or long IDs accepted')
       print('-a --st_application_id [NEXUS_IQ_APPLICATION_ID] - Applications ID in Nexus IQ')
       print('-j --st_scanner_jar - Location of nexus-iq-cli*.jar file')
@@ -67,6 +70,8 @@ def main(argv):
       print('-J --java_home [JAVA_HOME] - Java Home Directory (no trailing /)')
       print('-K --java_keystore_password [JAVA_KEYSTORE_PASSWORD] - Java Keystore Password')
       sys.exit()
+    elif opt in ("-c", "--cf_metadata"):
+      cf_metadata = arg
     elif opt in ("-i", "--docker_image_id"):
       docker_image_id = arg
     elif opt in ("-a", "--st_application_id"):
@@ -149,8 +154,19 @@ def main(argv):
 
     # Concatenate twistcli executable with command
     twistcli_exec = ' '.join([twistcli_base_command, twistcli_required_options, twistcli_optional_options, docker_image_id])
-    proc = subprocess.Popen(twistcli_exec, shell=True)
-    stdout, stderr = proc.communicate()
+    # Execute command but pipe stdout to variable and parse for Twistlock URL
+    if cf_metadata:
+      proc = subprocess.Popen(twistcli_exec, shell=True, stdout=subprocess.PIPE)
+      stdout = proc.communicate()[0].decode('utf-8').strip('\n')
+      tl_report_url = ''.join(re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', stdout))
+      with open('/codefresh/volume/env_vars_to_export', 'a') as f:
+        print('Twistlock Report: ' + tl_report_url)
+        f.write('TL_REPORT_URL=' + tl_report_url)
+        f.close()
+    # Execute command and send stdout to console
+    else:
+      proc = subprocess.Popen(twistcli_exec, shell=True)
+      stdout, stderr = proc.communicate()
     if proc.returncode != 0:
       sys.exit(1)
 

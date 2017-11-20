@@ -30,6 +30,7 @@ Example `codefresh.yml` build is below with required ENVIRONMENT VARIABLES in pl
 
 | ENVIRONMENT VARIABLE | SCRIPT ARGUMENT | DEFAULT | TYPE | REQUIRED | DESCRIPTION |
 |----------------------------|--------------------------------------|----------|---------|----------|---------------------------------------------------------------------------------------------------------------------------------|
+| CF_METADATA | [ -c, --cf_metadata ] | null | boolean | No | In combination with TL_UPLOAD stores Twistlock Report URL in TL_REPORT_URL var for Codefresh metadata annotation |
 | TL_CONSOLE_HOSTNAME | [ -C, --tl_console_hostname ] | null | string | Yes | hostname/ip |
 | TL_CONSOLE_PORT | [ -P, --tl_console_port ] | null | string | Yes | port |
 | TL_CONSOLE_USERNAME | [ -U, --tl_console_username ] | null | string | Yes | username |
@@ -81,4 +82,24 @@ codefresh.yml
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock
           - /var/lib/docker:/var/lib/docker
+          # Everything below this line is Optional for CF_METADATA
+          - '${{CF_VOLUME_NAME}}:/codefresh/volume'
+    add_flow_volume_to_composition: true
+
+  export:
+    title: "Exporting variables..."
+    image: alpine
+    commands:
+      - echo "Exporting variables..."
+
+  set_metadata:
+    title: "Setting metadata on image..."
+    image: alpine
+    commands:
+      - echo "Setting metadata on image..."
+    on_finish:
+      metadata:
+        set:
+          - '${{build_step.imageId}}':
+              - TwistlockSecurityReport: ${{TL_REPORT_URL}}
 ```
