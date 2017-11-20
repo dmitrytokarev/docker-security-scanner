@@ -159,7 +159,7 @@ def main(argv):
       stdout = proc.communicate()[0].decode('utf-8').strip('\n')
       tl_report_url = ''.join(re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', stdout))
       with open('/codefresh/volume/env_vars_to_export', 'a') as f:
-        print('Setting TL_REPORT_URL to:' + tl_report_url)
+        print('Twistlock Report: ' + tl_report_url)
         f.write('TL_REPORT_URL=' + tl_report_url)
         f.close()
     else:
