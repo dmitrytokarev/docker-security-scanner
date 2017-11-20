@@ -154,13 +154,13 @@ def main(argv):
 
     # Concatenate twistcli executable with command
     twistcli_exec = ' '.join([twistcli_base_command, twistcli_required_options, twistcli_optional_options, docker_image_id])
-    proc = subprocess.Popen(twistcli_exec, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    proc = subprocess.Popen(twistcli_exec, shell=True)
     stdout, stderr = proc.communicate()
     if proc.returncode != 0:
       sys.exit(1)
     if cf_metadata:
-      print('Printing stdout: ' + stdout)
-      tl_report_url = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', stdout)
+      print('Printing stdout: ' + proc.stdout)
+      tl_report_url = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', proc.stdout)
       with open('/codefresh/volume/env_vars_to_export', 'xt') as f:
         print('Setting TL_REPORT_URL to:' + tl_report_url)
         f.write('export TL_REPORT_URL=' + tl_report_url)
