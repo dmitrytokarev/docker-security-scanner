@@ -154,6 +154,7 @@ def main(argv):
 
     # Concatenate twistcli executable with command
     twistcli_exec = ' '.join([twistcli_base_command, twistcli_required_options, twistcli_optional_options, docker_image_id])
+    # Execute command but pipe stdout to variable and parse for Twistlock URL
     if cf_metadata:
       proc = subprocess.Popen(twistcli_exec, shell=True, stdout=subprocess.PIPE)
       stdout = proc.communicate()[0].decode('utf-8').strip('\n')
@@ -162,6 +163,7 @@ def main(argv):
         print('Twistlock Report: ' + tl_report_url)
         f.write('TL_REPORT_URL=' + tl_report_url)
         f.close()
+    # Execute command and send stdout to console
     else:
       proc = subprocess.Popen(twistcli_exec, shell=True)
       stdout, stderr = proc.communicate()
