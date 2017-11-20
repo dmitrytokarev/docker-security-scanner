@@ -156,7 +156,7 @@ def main(argv):
     twistcli_exec = ' '.join([twistcli_base_command, twistcli_required_options, twistcli_optional_options, docker_image_id])
     if cf_metadata:
       proc = subprocess.Popen(twistcli_exec, shell=True, stdout=subprocess.PIPE)
-      stdout = proc.communicate()[0].strip('\n')
+      stdout = proc.communicate()[0].decode('utf-8').strip('\n')
       tl_report_url = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', stdout)
       with open('/codefresh/volume/env_vars_to_export', 'xt') as f:
         print('Setting TL_REPORT_URL to:' + tl_report_url)
