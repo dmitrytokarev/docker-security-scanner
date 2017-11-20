@@ -165,7 +165,7 @@ def main(argv):
       with open('/codefresh/volume/env_vars_to_export') as f:
         lines = f.readlines()
         for line in lines:
-             print line
+          print(line)
     else:
       proc = subprocess.Popen(twistcli_exec, shell=True)
       stdout, stderr = proc.communicate()
