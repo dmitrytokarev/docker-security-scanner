@@ -1,4 +1,4 @@
-FROM ubuntu:17.10
+FROM ubuntu:xenial
 
 ENV LANG C.UTF-8
 
@@ -33,7 +33,7 @@ RUN set -e &&\
     ; \
     rm -rf /var/lib/apt/lists/*; \
     \
-    [ "$JAVA_HOME" = "$(docker-java-home)" ]; \
+    JAVA_HOME="$(docker-java-home)"; \
     \
     update-alternatives --get-selections | awk -v home="$JAVA_HOME" 'index($3, home) == 1 { $2 = "manual"; print | "update-alternatives --set-selections" }'; \
     update-alternatives --query java | grep -q 'Status: manual' && \
