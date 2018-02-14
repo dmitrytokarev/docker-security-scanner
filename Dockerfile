@@ -38,8 +38,8 @@ RUN set -e &&\
     update-alternatives --get-selections | awk -v home="$JAVA_HOME" 'index($3, home) == 1 { $2 = "manual"; print | "update-alternatives --set-selections" }'; \
     update-alternatives --query java | grep -q 'Status: manual' && \
     mkdir /packages && \
-    curl -o /packages/twistcli https://cdn.twistlock.com/support/twistcli && \
-    curl -o /packages/nexus-iq-cli-1.38.0-02.jar https://download.sonatype.com/clm/scanner/nexus-iq-cli-1.38.0-02.jar
+    curl -L -o /packages/twistcli https://cdn.twistlock.com/support/twistcli && \
+    curl -L -o /packages/nexus-iq-cli-1.38.0-02.jar https://download.sonatype.com/clm/scanner/nexus-iq-cli-1.38.0-02.jar
 
 COPY scripts /scripts
 
