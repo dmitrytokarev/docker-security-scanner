@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:17.10
 
 ENV LANG C.UTF-8
 
@@ -10,7 +10,9 @@ RUN { \
     } > /usr/local/bin/docker-java-home && \
     chmod +x /usr/local/bin/docker-java-home
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN set -e &&\
+    set -x &&\
+    apt-get update && apt-get install -y --no-install-recommends \
       bzip2 \
       unzip \
       xz-utils \
